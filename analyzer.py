@@ -23,7 +23,7 @@ with open("rawlogs_measurements") as f:
             splitted_line = lines.split(" ")
             time_in_epoch = time.mktime(datetime.datetime.strptime(splitted_line[0], "%Y-%m-%d-%H:%M:%S").timetuple())
             timestampsQ.append(time_in_epoch)
-            qbers.append(splitted_line[7])
+            qbers.append(float(splitted_line[7])*100)
             datasetQ.append(counter)
         elif "RAW_KEY_EXCHANGE_RATE" in lines:
             splitted_line = lines.split(" ")
@@ -48,3 +48,17 @@ final_data = final_data.sort_index()
 
 for new_counter in range(counter+1):
     print new_counter
+    
+Qbers = final_data[(final_data["Dataset"]==0) & (final_data["Qber"] > 0) ]
+x1 = Qbers.index.tolist()
+y1 = Qbers["Qber"].tolist()
+Raws = final_data[(final_data["Dataset"]==0) & (final_data["Raw key"] > 0) ]
+x2 = Raws.index.tolist()
+y2 = Raws["Raw key"].tolist()
+# Two subplots, the axes array is 1-d http://matplotlib.org/examples/pylab_examples/subplots_demo.html
+f, axarr = plt.subplots(2, sharex=True)
+axarr[0].grid()
+axarr[0].plot(x1, y1)
+axarr[0].set_title('Sharing X axis')
+axarr[1].grid()
+axarr[1].plot(x2, y2)
