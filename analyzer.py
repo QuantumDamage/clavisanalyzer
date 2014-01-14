@@ -4,10 +4,15 @@ Created on Thu Jan  2 12:13:23 2014
 
 @author: damian
 """
+# to prevent window appear http://matplotlib.org/faq/howto_faq.html#generate-images-without-having-a-window-appear
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
 import time
 import datetime				#for converting string to epoch
 from pandas import DataFrame, concat
-from pylab import plt
+
 
 fresh_start = False
 
@@ -77,5 +82,6 @@ for new_counter in range(counter+1):
     axarr[0].set_title('Sharing X axis')
     axarr[1].grid()
     axarr[1].plot(x2, y2)
+    f.set_size_inches(14.0719,4.7953) #for poster
     plt.savefig(str(new_counter)+'foo.eps')
     plt.clf()
