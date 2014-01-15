@@ -66,12 +66,16 @@ for new_counter in range(counter+1):
     Qbers = final_data[(final_data["Dataset"]==new_counter) & (final_data["Qber"] > 0) ]
     x1 = Qbers.index.tolist()
     y1 = Qbers["Qber"].tolist()
+    x1_average = DataFrame.mean(Qbers)["Qber"]
+    x1_std_dev = DataFrame.std(Qbers)["Qber"]
     #prepairing proper time:
     x1[:] = [x - initialTimestamps[new_counter] for x in x1]
     
     Raws = final_data[(final_data["Dataset"]==new_counter) & (final_data["Raw key"] > 0) ]
     x2 = Raws.index.tolist()
     y2 = Raws["Raw key"].tolist()
+    #x2_average = 2
+    #x2_std_dev = 3
     #once again correcting counter:
     x2[:] = [x - initialTimestamps[new_counter] for x in x2]
     print x1[0], x2[0], initialTimestamps[new_counter]
@@ -79,9 +83,16 @@ for new_counter in range(counter+1):
     f, axarr = plt.subplots(2, sharex=True)
     axarr[0].grid()
     axarr[0].plot(x1, y1)
+    #average and 3* deviations
+    axarr[0].hlines(x1_average,x1[0],x1[-1])
+    axarr[0].hlines(x1_average+3*x1_std_dev,x1[0],x1[-1])
+    axarr[0].hlines(x1_average-3*x1_std_dev,x1[0],x1[-1])
     axarr[0].set_title('Sharing X axis')
     axarr[1].grid()
     axarr[1].plot(x2, y2)
+    #axarr[1].hlines(x2_average,x2[0],x2[-1])
+    #axarr[1].hlines(x2_average+3*x2_std_dev,x2[0],x2[-1])
+    #axarr[1].hlines(x2_average-3*x2_std_dev,x2[0],x2[-1])
     f.set_size_inches(14.0719,4.7953) #for poster
     plt.savefig(str(new_counter)+'foo.eps')
     plt.clf()
