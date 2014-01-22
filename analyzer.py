@@ -16,6 +16,8 @@ from pandas import DataFrame, concat
 
 fresh_start = False
 
+titles = ["200m","200m","200m","400m","400m","400m","800m","800m","800m"]
+
 timestampsQ, qbers, datasetQ = [], [], []
 timestampsRaws, raws, datasetR = [], [], []
 initialTimestamps = []
@@ -84,15 +86,18 @@ for new_counter in range(counter+1):
     axarr[0].grid()
     axarr[0].plot(x1, y1)
     #average and 3* deviations
-    axarr[0].hlines(x1_average,x1[0],x1[-1])
-    axarr[0].hlines(x1_average+3*x1_std_dev,x1[0],x1[-1])
-    axarr[0].hlines(x1_average-3*x1_std_dev,x1[0],x1[-1])
-    axarr[0].set_title('Sharing X axis')
+    #axarr[0].hlines(x1_average,x1[0],x1[-1])
+    #axarr[0].hlines(x1_average+3*x1_std_dev,x1[0],x1[-1])
+    #axarr[0].hlines(x1_average-3*x1_std_dev,x1[0],x1[-1])
+    axarr[0].set_title(titles[new_counter])
+    axarr[0].set_ylabel("QBER [%]")
+    axarr[1].set_ylabel("Raw key [a. u.]")
     axarr[1].grid()
     axarr[1].plot(x2, y2)
+    axarr[1].set_xlabel('Time [s]')
     #axarr[1].hlines(x2_average,x2[0],x2[-1])
     #axarr[1].hlines(x2_average+3*x2_std_dev,x2[0],x2[-1])
     #axarr[1].hlines(x2_average-3*x2_std_dev,x2[0],x2[-1])
     f.set_size_inches(14.0719,4.7953) #for poster
-    plt.savefig(str(new_counter)+'foo.eps')
+    plt.savefig(str(new_counter)+"-"+titles[new_counter]+".eps")
     plt.clf()
